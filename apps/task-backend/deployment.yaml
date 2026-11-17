@@ -5,7 +5,7 @@ metadata:
   labels:
     app: task-backend
 spec:
-  replicas: 2 # <-- Queremos 2 copias de la app corriendo en paralelo
+  replicas: 3
   selector:
     matchLabels:
       app: task-backend
