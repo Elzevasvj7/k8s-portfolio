@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-backend-service
+spec:
+  type: ClusterIP # <-- Tipo estándar: IP interna estable dentro del clúster
+  selector:
+    app: task-backend # <-- El imán: atrae a todos los pods con esta etiqueta
+  ports:
+    - protocol: TCP
+      port: 80         # El puerto del Servicio (por donde recibe tráfico)
+      targetPort: 3000 # El puerto del Contenedor NestJS (hacia donde lo reenvía)

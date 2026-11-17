@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-backend-deployment
+  labels:
+    app: task-backend
+spec:
+  replicas: 2 # <-- Queremos 2 copias de la app corriendo en paralelo
+  selector:
+    matchLabels:
+      app: task-backend
+  template:
+    metadata:
+      labels:
+        app: task-backend
+    spec:
+      containers:
+        - name: task-backend
+          image: task-backend:test
+          imagePullPolicy: IfNotPresent # <-- Usa la imagen que cargamos con kind sin ir a internet
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: task-backend-config # <-- Trae variables de entorno desde ConfigMap
+            - secretRef:
+                name: task-backend-secret # <-- Trae variables de entorno desde Secret
+          # Límites de recursos (Buena práctica de FinOps y estabilidad)
+          resources:
+            requests:
+              cpu: "100m"      # 0.1 CPU
+              memory: "128Mi"
+            limits:
+              cpu: "250m"      # 0.25 CPU
+              memory: "256Mi"
+          # ¿El contenedor sigue vivo? Si falla, K8s lo reinicia
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5  # Espera 5s después de arrancar antes del primer chequeo
+            periodSeconds: 10       # Revisa cada 10s
+            failureThreshold: 3     # Si falla 3 veces, mátalo y reinícialo
+
+          # ¿El contenedor ya está listo para atender usuarios? Si falla, no le manda tráfico
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 3  # Espera 3s antes del primer chequeo
+            periodSeconds: 5        # Revisa cada 5s
