@@ -1,0 +1,23 @@
+# Número de réplicas de la aplicación
+replicaCount: 2
+
+# Configuración de la imagen Docker
+image:
+  repository: k8s-portfolio
+  tag: 4577d25d619e42b8bea21ec2e38007773b4715e8
+  pullPolicy: IfNotPresent
+
+# Configuración del Servicio de red
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+# Límites de cómputo para los Pods
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-backend-deployment
+  labels:
+    app: task-backend
+spec:
+  replicas: {{ .Values.replicaCount }} # <-- DINÁMICO
+  selector:
+    matchLabels:
+      app: task-backend
+  template:
+    metadata:
+      labels:
+        app: task-backend
+    spec:
+      containers:
+        - name: task-backend
+          image: "489323024051.dkr.ecr.us-east-2.amazonaws.com/{{ .Values.image.repository }}:{{ .Values.image.tag }}" # <-- DINÁMICO
+          imagePullPolicy: {{ .Values.image.pullPolicy }}                 # <-- DINÁMICO
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}             # <-- DINÁMICO
+          
+          envFrom:
+            - configMapRef:
+                name: task-backend-config
+            - secretRef:
+                name: task-backend-secret
+
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5

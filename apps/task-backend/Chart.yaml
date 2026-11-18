@@ -1,0 +1,10 @@
+apiVersion: v2
+name: task-backend
+description: Helm Chart profesional para la API de tareas en Kubernetes
+type: application
+
+# Versión del Chart (se actualiza cuando cambias plantillas de K8s)
+version: 0.1.0
+
+# Versión de la aplicación NestJS que corre adentro
+appVersion: "1.0.0"
