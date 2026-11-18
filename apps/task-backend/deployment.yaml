@@ -14,9 +14,11 @@ spec:
       labels:
         app: task-backend
     spec:
+      imagePullSecrets:
+        - name: ecr-regcred # <-- Secret para acceder a ECR
       containers:
         - name: task-backend
-          image: task-backend:test
+          image: 489323024051.dkr.ecr.us-east-2.amazonaws.com/task-api-cicd:787173160c7c71e39212004900e307f73dc5d580
           imagePullPolicy: IfNotPresent # <-- Usa la imagen que cargamos con kind sin ir a internet
           ports:
             - containerPort: 3000
