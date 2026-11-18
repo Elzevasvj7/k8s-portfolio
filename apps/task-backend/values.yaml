@@ -1,11 +1,15 @@
 # Número de réplicas de la aplicación
-replicaCount: 2
+replicaCount: 3
 
 # Configuración de la imagen Docker
 image:
   repository: k8s-portfolio
   tag: 4577d25d619e42b8bea21ec2e38007773b4715e8
   pullPolicy: IfNotPresent
+
+# Secret para acceder a la imagen privada en ECR
+imagePullSecrets:
+  - name: ecr-regcred
 
 # Configuración del Servicio de red
 service:
