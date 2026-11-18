@@ -18,7 +18,7 @@ spec:
         - name: ecr-regcred # <-- Secret para acceder a ECR
       containers:
         - name: task-backend
-          image: 489323024051.dkr.ecr.us-east-2.amazonaws.com/k8s-portfolio:fc76d224d68be4d56ee0f4ee2df6ca168181bd61
+          image: 489323024051.dkr.ecr.us-east-2.amazonaws.com/k8s-portfolio:4577d25d619e42b8bea21ec2e38007773b4715e8
           imagePullPolicy: IfNotPresent # <-- Usa la imagen que cargamos con kind sin ir a internet
           ports:
             - containerPort: 3000
