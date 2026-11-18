@@ -1,5 +1,5 @@
 # Número de réplicas de la aplicación
-replicaCount: 3
+replicaCount: 5
 
 # Configuración de la imagen Docker
 image:
